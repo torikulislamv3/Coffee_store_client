@@ -1,3 +1,6 @@
+// import { stringify } from "postcss";
+
+import Swal from "sweetalert2";
 
 
 const AddCoffee = () => {
@@ -16,8 +19,34 @@ const AddCoffee = () => {
         console.log(newCoffee);
 
 
-    }
-    return (
+        fetch('http://localhost:5000/coffee',
+    {
+        method: 'POST',
+
+        headers : {
+            'content-type' : 'application/json'
+        },
+        body : JSON.stringify(newCoffee)
+        
+    })
+        .then(res=> res.json())
+        .then(data=>{
+            console.log(data);
+
+            if(data.insertedId){
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your Coffee has been Added',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                  })
+            }
+        })
+
+        
+        }
+    
+    return(
         <div className="bg-[#F4F3F0] p-5">
             <h2 className="text-5xl font-semibold text-[#331A15] mb-3">ADD NEW COFFEE!</h2>
             <p className="text-black mb-10">
@@ -58,7 +87,8 @@ const AddCoffee = () => {
 
             </form>
         </div>
-    );
-};
+    )
+    
+}
 
 export default AddCoffee;
